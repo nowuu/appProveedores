@@ -1,20 +1,88 @@
 package com.ceica.modelos;
 
+import com.ceica.bbdd.Conexion;
+import jdk.internal.access.JavaIOFileDescriptorAccess;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Proveedor {
 
     private int id;
-     private String nombre;
-     private  String cif;
-     private  String direccion;
-     private String localidad;
-     private String provincia;
+    private String nombre;
+    private String cif;
+    private String direccion;
+    private String localidad;
+    private String provincia;
 
-public Proveedor(){
-}
+    public Proveedor() {
+    }
+
     public Proveedor(String nombre, String cif) {
         this.nombre = nombre;
         this.cif = cif;
     }
+
+    public static boolean insertar(Proveedor proveedor) {
+Connection con=Conexion.conectar();
+String sql="insert into proveedores (cif,nombre,dirección,localidad,provincia)"+
+        "values(?,?,?,?,?)";
+        try {
+            PreparedStatement pst=con.prepareStatement(sql);
+            pst.setString(1, proveedor.getCif());
+            pst.setString(2, proveedor.getNombre());
+            pst.setString(3, proveedor.getDireccion());
+            pst.setString(4, proveedor.getLocalidad());
+            pst.setString(5, proveedor.getProvincia());
+            if (pst.executeUpdate()<0){
+                return false;
+            }else{
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean editarNombreProovedor(String cif, String nuevoNombre) {
+        Connection con=Conexion.conectar();
+        String sql="update proveedores set nombre=? where cif=?";
+        try {
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, nuevoNombre);
+            pst.setString(2, cif);
+            if (pst.executeUpdate() > 0){
+            return true;
+        }else{
+            return false;
+        }
+        } catch (SQLException e) {
+            //throw new RuntimeException(e);
+            return false;
+        }
+    }
+
+    public static boolean eliminarProveedor(String cif) {
+        Connection con = Conexion.conectar();
+        String sql = "delete from proveedores where cif=?";
+        try {
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, cif);
+            if(pst.executeUpdate()>0){
+                con.close();
+                return true;
+            }else{
+                con.close();
+                return false;
+            }
+        } catch (SQLException e) {
+            //throw new RuntimeException(e);
+            return false;
+        }
+
+    }
+
 
     public int getId() {
         return id;
@@ -64,7 +132,49 @@ public Proveedor(){
         this.provincia = provincia;
     }
 
-    @Override
+
+    public static List<Proveedor> getProveedores() {
+        List<Proveedor> proveedorList = new ArrayList<>();
+        Connection con = null;
+
+        try {
+            con = Conexion.conectar();
+            try (Statement stm = con.createStatement();
+                 ResultSet resultSet = stm.executeQuery("SELECT * FROM proveedores")) {
+
+                while (resultSet.next()) {
+                    Proveedor proveedor = new Proveedor();
+                    proveedor.setId(resultSet.getInt("idProveedores"));
+                    proveedor.setCif(resultSet.getString("cif"));
+                    proveedor.setNombre(resultSet.getString("nombre"));
+                    proveedor.setDireccion(resultSet.getString("dirección"));
+                    proveedor.setLocalidad(resultSet.getString("localidad"));
+                    proveedor.setProvincia(resultSet.getString("provincia"));
+                    proveedorList.add(proveedor);
+                }
+
+            } catch (SQLException e) {
+                // Aquí podrías loguear o imprimir información sobre el error
+                return proveedorList;
+            }
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    // Manejo de errores al cerrar la conexión
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return proveedorList;
+    }
+
+
+
+
+        @Override
     public String toString() {
         return "Proveedor{" +
                 "id=" + id +

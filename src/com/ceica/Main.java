@@ -5,6 +5,7 @@ import com.ceica.Controladores.LoginController;
 import com.ceica.modelos.Color;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -21,7 +22,7 @@ public class Main {
             usr=leer.nextLine();
             System.out.println("Introduce password");
             pass=leer.nextLine();
-            if(LoginController.LoginController(usr,pass)){
+            if(LoginController.login(usr,pass)){
                 System.out.println("Estoy en AppAlmacen");
                 menuPrincipalAlmacen(leer,almacen);
                 leer.nextLine();
@@ -50,7 +51,8 @@ public class Main {
 
                 break;
             case "2":
-subMenuPiezas(leer,almacen);
+
+                subMenuPiezas(leer,almacen);
 
                 break;
             case "3":
@@ -68,9 +70,99 @@ subMenuPiezas(leer,almacen);
     }
 
     private static void subMenuPiezas(Scanner leer, AlmacenController almacen) {
+        String op;
+        String cif;
+        String menuPiezas= """
+                1. Nueva pieza
+                2. Cambiar precio
+                3. Borrar pieza
+                4. Ver piezas
+                5. Volver al menú anterior
+                """;
+        do{
+            System.out.println(menuPiezas);
+            op=leer.nextLine();
+            switch (op){
+                case "1":
+                    nuevaPieza(leer,almacen);
+                    break;
+                case "2":
+                    System.out.println("Dime el id de la pieza");
+                    int id = leer.nextInt();
+                    leer.nextLine();
+                    System.out.println("Ingrese el nuevo precio de la pieza:");
+                    double nuevoPrecio = leer.nextDouble();
+                    leer.nextLine();
+                    boolean actualizacionExitosa = almacen.NuevoPrecioPieza(id,nuevoPrecio);
+                    System.out.println("¿Actualización exitosa? " + actualizacionExitosa);
+                    System.out.println("Lista de piezas después de la actualización:");
+                    System.out.println(almacen.verPiezas());
+                    break;
+                case "3":
+                    System.out.println("que provvedor quieres borrar");
+                    cif= leer.nextLine();
+                    almacen.borrarProveedor(cif);
+                    System.out.println("el prooveedor a sido borrado");
+                    break;
+                case "4":
+                    System.out.println(almacen.toString());
+                    break;
+                case "5":
+                    break;
+                default:
+                    System.out.println("Opción no válida");
+            }
+
+        }while(! "5".equals(op));
     }
 
-    private static void subMenuProveedores(Scanner leer, AlmacenController almacen) {
+
+
+    private static void nuevaPieza(Scanner leer, AlmacenController almacen) {
+        String nombre, colorPieza;
+        double precio = 0;
+        Color color = null;
+        boolean colorValido = false, categoriaValida = false, precioValido = false;
+        int categoria;
+        System.out.print("Nombre de la pieza: ");
+        nombre = leer.nextLine();
+        do {
+            System.out.print("Precio: ");
+            try {
+                precio = leer.nextDouble();
+                leer.nextLine();
+                precioValido = true;
+            } catch (Exception e) {
+                leer.nextLine();
+                System.out.println("Formato de precio no válido");
+                precioValido = false;
+            }
+        } while (!precioValido);
+        do {
+            System.out.println("Color de la pieza (Colores disponibles)");
+            System.out.println(Arrays.stream(Color.values()).toList());
+            colorPieza = leer.nextLine();
+            try {
+                color = Color.valueOf(colorPieza.toUpperCase());
+                colorValido = true;
+            } catch (Exception e) {
+                colorValido = false;
+            }
+        } while (!colorValido);
+        do {
+            System.out.println(almacen.categoriasDisponibles());
+            categoria = leer.nextInt();
+            leer.nextLine();
+            if (almacen.categoriaValida(categoria)) {
+                categoriaValida = true;
+            } else {
+                System.out.println("Categoría no válida");
+            }
+        } while (!categoriaValida);
+        almacen.nuevoPieza(nombre, color, precio, categoria);
+    }
+
+        private static void subMenuProveedores(Scanner leer, AlmacenController almacen) {
         String op,cif,nombre,direccion,localidad,provincia;
         String menuProveedores= """
                 1. Nuevo proveedor

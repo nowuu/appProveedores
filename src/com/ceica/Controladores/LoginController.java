@@ -1,15 +1,9 @@
 package com.ceica.Controladores;
 
+import com.ceica.Modelos.Usuario;
 
 public class LoginController {
-
-    public static boolean LoginController( String USUARIO, String CONTRASEÑA) {
-        if ("admin".equals(USUARIO) & "1234".equals(CONTRASEÑA)) {
-            return true;
-
-        } else {
-            return false;
-        }
-
+    public static boolean login(String usuario,String password){
+        return Usuario.getUsuario(usuario,password);
     }
 }
