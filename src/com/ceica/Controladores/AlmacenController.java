@@ -24,8 +24,8 @@ public class AlmacenController {
         pedidoList = new ArrayList<>();
         piezaList = new ArrayList<>();
         categorias = new ArrayList<>();
-        proveedorList=Proveedor.getProveedores();
-        categorias=Categoria.getCategorias();
+        proveedorList = Proveedor.getProveedores();
+        categorias = Categoria.getCategorias();
 
 
     }
@@ -38,9 +38,9 @@ public class AlmacenController {
         proveedor.setProvincia(provincia);
 
         if (proveedor.insertar("cif,nombre,direccion,localidad,provincia)" +
-                " values(?,?,?,?,?)",cif,nombre,direccion,localidad,provincia)) {
+                " values(?,?,?,?,?)", cif, nombre, direccion, localidad, provincia)) {
             return proveedorList.add(proveedor);
-        }else{
+        } else {
             return false;
         }
 
@@ -49,14 +49,16 @@ public class AlmacenController {
     public boolean borrarProveedor(String cif) {
 
         //return proveedorList.removeIf(proveedor -> cif.equals(proveedor.getCif()));
-        if (Proveedor.eliminarProveedor(cif)){
-
-            proveedorList=Proveedor.getProveedores();
-            return true;
-        }else{
-            return false;
-        }
+        Proveedor proveedor = new Proveedor();
+        if (proveedor.borrar("cif=?",cif)){
+            proveedorList = Proveedor.getProveedores();
+        return true;
+    }else{
+        return false;
     }
+
+    }
+
 
     //
 //    public boolean borrarProveedor(String cif) {
@@ -81,38 +83,33 @@ public class AlmacenController {
 //        return false;
 //    }
 
-    public boolean actulizarCIFproveedor(String cif ){
-
-    for (Proveedor proveedor : proveedorList) {
-        if (proveedor.getCif().equals(cif)) {
-            proveedor.setCif(cif);
+    public boolean actualizarCIFProveedor(String nuevoCIF) {
+        Proveedor proveedor = new Proveedor();
+        if (proveedor.actualizar("cif=? where cif=?", nuevoCIF))
+            proveedorList = Proveedor.getProveedores();
             return true;
         }
-    }
-        return false;
 
 
-}
+
+//        if (proveedor.getCif().equals(cif)) {
+//            proveedor.setCif(cif);
+//            return true;
+//        }
+//    }
+//        return false;
+//
+//
+//}
 
 
     public boolean actualizarProveedorNombre(String cif, String nuevoNombre) {
-        if (Proveedor.editarNombreProovedor(cif, nuevoNombre))
+        Proveedor proveedor = new Proveedor();
+        if (proveedor.actualizar("nombre=? where cif=?", nuevoNombre,cif))
             proveedorList = Proveedor.getProveedores();
-            return true;
-
-//            for (Proveedor proveedor : proveedorList) {
-//                if (proveedor.getCif().equals(cif)) {
-//                    proveedor.setNombre(nuevoNombre);
-//                    return true;
-//                }
-//            }
-//            return false;
-//        }else {
-//            return false;
-//        }
-
-
+        return true;
     }
+
 
     public boolean actualizarProveedorDirecion(String cif, String nuevaDirección) {
         for (Proveedor proveedor : proveedorList) {
@@ -153,10 +150,12 @@ public class AlmacenController {
     public boolean nuevoPieza(String nombre, Color color, Double precio, int idcategoria) {
         Pieza pieza = new Pieza(nombre, color.toString(), precio);
         pieza.setCategoria(getCategoriaByID(idcategoria));
-        piezaList.add(pieza);
-        return true;
+        if (pieza.insertar("(nombre,color,precio,idcategoria) values(?,?,?,?)",nombre,color.toString(),precio,idcategoria)) {
+            return true;
+        }else{
+            return false;
+        }
     }
-
     private Categoria getCategoriaByID(int id) {
         return categorias.stream()
                 .filter(c -> c.getId() == id).findFirst().get();

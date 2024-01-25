@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pieza {
+public class Pieza extends ModeloBase{
 
     private static int idPieza = 0;
     private int id;
@@ -122,6 +122,11 @@ public class Pieza {
         }
 
         return piezaList;
+    }
+
+    @Override
+    protected String getNombreTabla() {
+        return "piezas";
     }
 
 //    public static boolean insertar(Pieza pieza,Categoria categoria1) {

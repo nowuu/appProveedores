@@ -159,6 +159,7 @@ public class Main {
                 System.out.println("Categoría no válida");
             }
         } while (!categoriaValida);
+
         almacen.nuevoPieza(nombre, color, precio, categoria);
     }
 

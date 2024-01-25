@@ -41,13 +41,15 @@ public abstract class ModeloBase {
         return ejecutarQuery(sql, parametros);
     }
 
-    protected void actualizar(String sql, Object... parametros) {
-        sql="UPDATE "+getNombreTabla()+" "+sql;
-        ejecutarQuery(sql, parametros);
+    public boolean actualizar(String sql, Object... parametros) {
+        sql="UPDATE "+getNombreTabla()+" set "+sql;
+        return ejecutarQuery(sql, parametros);
     }
 
-    protected void borrar(String sql, Object... parametros) {
-        ejecutarQuery(sql, parametros);
+    public boolean borrar(String sql, Object... parametros) {
+        sql = "delete from " + getNombreTabla() + " where " + sql;
+        return ejecutarQuery(sql, parametros);
+
     }
 
     // Método para leer datos de la base de datos

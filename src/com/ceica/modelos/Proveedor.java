@@ -26,43 +26,43 @@ public class Proveedor extends ModeloBase{
 
 
 
-    public static boolean editarNombreProovedor(String cif, String nuevoNombre) {
-        Connection con=Conexion.conectar();
-        String sql="update proveedores set nombre=? where cif=?";
-        try {
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, nuevoNombre);
-            pst.setString(2, cif);
-            if (pst.executeUpdate() > 0){
-            return true;
-        }else{
-            return false;
-        }
-        } catch (SQLException e) {
-            //throw new RuntimeException(e);
-            return false;
-        }
-    }
+//    public static boolean editarNombreProovedor(String cif, String nuevoNombre) {
+//        Connection con=Conexion.conectar();
+//        String sql="update proveedores set nombre=? where cif=?";
+//        try {
+//            PreparedStatement pst = con.prepareStatement(sql);
+//            pst.setString(1, nuevoNombre);
+//            pst.setString(2, cif);
+//            if (pst.executeUpdate() > 0){
+//            return true;
+//        }else{
+//            return false;
+//        }
+//        } catch (SQLException e) {
+//            //throw new RuntimeException(e);
+//            return false;
+//        }
+//    }
 
-    public static boolean eliminarProveedor(String cif) {
-        Connection con = Conexion.conectar();
-        String sql = "delete from proveedores where cif=?";
-        try {
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, cif);
-            if(pst.executeUpdate()>0){
-                con.close();
-                return true;
-            }else{
-                con.close();
-                return false;
-            }
-        } catch (SQLException e) {
-            //throw new RuntimeException(e);
-            return false;
-        }
-
-    }
+//    public static boolean eliminarProveedor(String cif) {
+//        Connection con = Conexion.conectar();
+//        String sql = "delete from proveedores where cif=?";
+//        try {
+//            PreparedStatement pst = con.prepareStatement(sql);
+//            pst.setString(1, cif);
+//            if(pst.executeUpdate()>0){
+//                con.close();
+//                return true;
+//            }else{
+//                con.close();
+//                return false;
+//            }
+//        } catch (SQLException e) {
+//            //throw new RuntimeException(e);
+//            return false;
+//        }
+//
+//    }
 
 
     public int getId() {
