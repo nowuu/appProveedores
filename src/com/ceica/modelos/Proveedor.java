@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Proveedor {
+public class Proveedor extends ModeloBase{
 
     private int id;
     private String nombre;
@@ -24,26 +24,7 @@ public class Proveedor {
         this.cif = cif;
     }
 
-    public static boolean insertar(Proveedor proveedor) {
-Connection con=Conexion.conectar();
-String sql="insert into proveedores (cif,nombre,dirección,localidad,provincia)"+
-        "values(?,?,?,?,?)";
-        try {
-            PreparedStatement pst=con.prepareStatement(sql);
-            pst.setString(1, proveedor.getCif());
-            pst.setString(2, proveedor.getNombre());
-            pst.setString(3, proveedor.getDireccion());
-            pst.setString(4, proveedor.getLocalidad());
-            pst.setString(5, proveedor.getProvincia());
-            if (pst.executeUpdate()<0){
-                return false;
-            }else{
-                return true;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
     public static boolean editarNombreProovedor(String cif, String nuevoNombre) {
         Connection con=Conexion.conectar();
@@ -184,6 +165,11 @@ String sql="insert into proveedores (cif,nombre,dirección,localidad,provincia)"
                 ", localidad='" + localidad + '\'' +
                 ", provincia='" + provincia + '\'' +
                 '}';
+    }
+
+    @Override
+    protected String getNombreTabla() {
+        return "proveedores";
     }
 }
 

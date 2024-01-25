@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Categoria {
+public class Categoria extends ModeloBase {
 
     private int id;
 
@@ -19,7 +19,9 @@ public class Categoria {
         this.id = id;
         this.nombre = nombre;
     }
+public void Categoria(){
 
+}
     public int getId() {
         return id;
     }
@@ -72,5 +74,17 @@ public class Categoria {
     public String toString() {
         return id  + " -> "+nombre + "\n" ;
     }
+
+    @Override
+    protected String getNombreTabla() {
+        return "categorias";
+    }
+
+    public static void main(String[] a){
+Categoria categoria=new Categoria();
+
+
+    }
+
 }
 

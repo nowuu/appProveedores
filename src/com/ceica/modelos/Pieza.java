@@ -124,27 +124,27 @@ public class Pieza {
         return piezaList;
     }
 
-    public static boolean insertar(Pieza pieza,Categoria categoria1) {
-        Connection con=Conexion.conectar();
-        String sql="insert into proveedores (cif,nombre,dirección,localidad,provincia)"+
-                "values(?,?,?,?,?)";
-        try {
-            PreparedStatement pst=con.prepareStatement(sql);
-            pst.setString(1, proveedor.getCif());
-            pst.setString(2, proveedor.getNombre());
-            pst.setString(3, proveedor.getDireccion());
-            pst.setString(4, proveedor.getLocalidad());
-            pst.setString(5, proveedor.getProvincia());
-            if (pst.executeUpdate()<0){
-                return false;
-            }else{
-                return true;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
+//    public static boolean insertar(Pieza pieza,Categoria categoria1) {
+//        Connection con=Conexion.conectar();
+//        String sql="insert into proveedores (cif,nombre,dirección,localidad,provincia)"+
+//                "values(?,?,?,?,?)";
+//        try {
+//            PreparedStatement pst=con.prepareStatement(sql);
+//            pst.setString(1, proveedor.getCif());
+//            pst.setString(2, proveedor.getNombre());
+//            pst.setString(3, proveedor.getDireccion());
+//            pst.setString(4, proveedor.getLocalidad());
+//            pst.setString(5, proveedor.getProvincia());
+//            if (pst.executeUpdate()<0){
+//                return false;
+//            }else{
+//                return true;
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
 
 
 }

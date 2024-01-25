@@ -37,9 +37,8 @@ public class AlmacenController {
         proveedor.setLocalidad(localidad);
         proveedor.setProvincia(provincia);
 
-        if (Proveedor.insertar(proveedor)) {
-
-
+        if (proveedor.insertar("cif,nombre,direccion,localidad,provincia)" +
+                " values(?,?,?,?,?)",cif,nombre,direccion,localidad,provincia)) {
             return proveedorList.add(proveedor);
         }else{
             return false;
